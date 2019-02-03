@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">JoySlaveAPI16</string>
+    <string name="title_activity_remapper">Remap Controls</string>
+    <string name="title_activity_presets">PresetsActivity</string>
+    <string name="server_ip_address">Server IP Address</string>
+    <string name="server_port">Server Port</string>
+    <string name="_4269">4269</string>
+    <string name="m4k3_17_r41n">M4k3 17 r41n!</string>
+    <string name="manage_presets">Manage Presets</string>
+    <string name="remove">REMOVE</string>
+    <string name="apply">APPLY</string>
+    <string name="back">BACK</string>
+    <string name="next">NEXT</string>
+    <string name="press_the_following_button">Press the following button:</string>
+    <string name="save_as_preset">Save As Preset</string>
+    <string name="map_a_new_controller">Map a new controller</string>
+</resources>

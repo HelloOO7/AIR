@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".TranscriptorActivity">
+
+    <EditText
+        android:id="@+id/ipTextBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="92dp"
+        android:ems="10"
+        android:gravity="center"
+        android:hint="@string/server_ip_address"
+        android:inputType="textUri"
+        android:importantForAutofill="no" />
+
+    <EditText
+        android:id="@+id/portTextBox"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="143dp"
+        android:ems="10"
+        android:gravity="center"
+        android:hint="@string/server_port"
+        android:inputType="numberDecimal"
+        android:text="@string/_4269"
+        android:importantForAutofill="no" />
+
+    <Button
+        android:id="@+id/btnConnect"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="194dp"
+        android:text="@string/m4k3_17_r41n" />
+
+    <Button
+        android:id="@+id/btnRemap"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentBottom="true"
+        android:text="@string/map_a_new_controller" />
+
+    <Button
+        android:id="@+id/btnPresets"
+        android:layout_width="192dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginRight="192dp"
+        android:layout_marginEnd="192dp"
+        android:layout_marginBottom="48dp"
+        android:text="@string/manage_presets" />
+</RelativeLayout>
