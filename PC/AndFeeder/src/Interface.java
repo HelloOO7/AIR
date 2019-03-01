@@ -15,7 +15,7 @@ public class Interface {
 	public static void main(String[] args) throws VJoyException{
 		v = new VJoy();
 		//id = (args[0] != null && Integer.parseInt(args[0]) > 0 && Integer.parseInt(args[0]) <= 16) ? Integer.parseInt(args[0]) : 1;
-		id = 2;
+		id = 1;
 		if (v.vJoyEnabled()) {
 			System.out.println("VJoy is enabled, communicating with driver...");
 			System.out.println("VJoy Interface running with version " + v.getvJoyVersion());

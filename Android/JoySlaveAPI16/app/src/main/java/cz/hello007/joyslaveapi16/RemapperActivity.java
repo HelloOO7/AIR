@@ -20,13 +20,11 @@ public class RemapperActivity extends AppCompatActivity {
 
     private TextView maptext;
     private TextView kctext;
-    private String[] buttonNames = {"A", "B", "X", "Y", "Shoulder L", "Shoulder R", "D-Pad UP", "D-Pad DOWN", "D-Pad LEFT", "D-Pad RIGHT", "Start", "Select", "Click L", "Click R"};
+    private final String[] buttonNames = {"A", "B", "X", "Y", "Shoulder L", "Shoulder R", "D-Pad UP", "D-Pad DOWN", "D-Pad LEFT", "D-Pad RIGHT", "Start", "Select", "Click L", "Click R"};
     private int[] keycodes = new int[14];
     private int index = 0;
     private int lastAction = KeyEvent.ACTION_UP;
     private RemapperActivity mActivity;
-    private Ini ini;
-    private boolean exists;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,7 +56,7 @@ public class RemapperActivity extends AppCompatActivity {
         lastAction = event.getAction();
         return true;
     }
-    public void advance(int keycode){
+    private void advance(int keycode){
         keycodes[index] = keycode;
         if (index != 13){
             index ++;
@@ -109,7 +107,7 @@ public class RemapperActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int which) {
                 name = et.getText().toString();
                 Log.e("test", name);
-                ControllerPreset cp = new ControllerPreset(mActivity, name, keycodes, new int[8]);
+                ControllerPreset cp = new ControllerPreset(mActivity, name, keycodes, new int[8], false);
                 cp.savePreset();
                 Toast.makeText(mActivity, "Saved!", Toast.LENGTH_SHORT).show();
                 mActivity.finish();

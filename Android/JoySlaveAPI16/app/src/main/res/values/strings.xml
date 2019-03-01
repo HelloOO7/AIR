@@ -14,4 +14,5 @@
     <string name="press_the_following_button">Press the following button:</string>
     <string name="save_as_preset">Save As Preset</string>
     <string name="map_a_new_controller">Map a new controller</string>
+    <string name="using_default_preset">Using default preset</string>
 </resources>

@@ -11,8 +11,12 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ListAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 
 class PresetsAdapter extends BaseAdapter implements ListAdapter {
@@ -45,7 +49,7 @@ class PresetsAdapter extends BaseAdapter implements ListAdapter {
         View view = convertView;
         if (view == null) {
             LayoutInflater inflater = (LayoutInflater) con.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            view = inflater.inflate(R.layout.item_preset, null);
+            view = inflater.inflate(R.layout.item_preset, parent, false);
         }
 
         TextView ptext = view.findViewById(R.id.textMain);
@@ -80,6 +84,19 @@ class PresetsAdapter extends BaseAdapter implements ListAdapter {
         btnApply.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
+                try {
+                    FileOutputStream os = new FileOutputStream(con.getFilesDir().getPath() + "/current.ini");
+                    FileInputStream is = new FileInputStream(con.getExternalFilesDir(null).getPath() + "/" + list.get(position));
+                    byte[] b = new byte[is.available()];
+                    is.read(b);
+                    os.write(b);
+                    is.close();
+                    os.close();
+                    Toast.makeText(con, "Applied successfully!", Toast.LENGTH_SHORT).show();
+                } catch (IOException e) {
+                    Toast.makeText(con, "IOException thrown while applying.", Toast.LENGTH_LONG).show();
+                    e.printStackTrace();
+                }
                 notifyDataSetChanged();
             }
         });

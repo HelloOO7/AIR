@@ -17,6 +17,7 @@ import android.widget.EditText;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.Socket;
+import java.util.ArrayList;
 
 public class TranscriptorActivity extends AppCompatActivity {
 
@@ -25,13 +26,13 @@ public class TranscriptorActivity extends AppCompatActivity {
     private OutputStream os;
     private OutputStream os2;
     private boolean canDispatch = false;
+    private ArrayList<Integer> kcal;
     /*ABXYLRUPDOWNLEFTRIGHTSTARTSELECTCLICKLCLICKR*/
     private boolean[] keyStates = new boolean[14];
     private TranscriptorActivity mActivity;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         mActivity = this;
-        InputManager im = (InputManager) this.getSystemService(Context.INPUT_SERVICE);
         super.onCreate(savedInstanceState);
         Window window = this.getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
@@ -64,6 +65,17 @@ public class TranscriptorActivity extends AppCompatActivity {
         btn.setOnClickListener(ocl);
         btnRemap.setOnClickListener(ocl_remap);
         btnPresets.setOnClickListener(ocl_presets);
+        ControllerPreset cp = new ControllerPreset(this);
+        if (!cp.exists){
+            cp = createFallbackPreset();
+            cp.savePreset();
+        }
+        /*TextView tw = findViewById(R.id.curPreset);
+        tw.setText(cp.presetName);*/
+        kcal = new ArrayList<>();
+        for (int i : cp.buttons){
+            kcal.add(i);
+        }
     }
     private void confSocket(final String ip, final int port){
         Thread t = new Thread(){
@@ -94,15 +106,18 @@ public class TranscriptorActivity extends AppCompatActivity {
                 if (canDispatch){
                     int isDownByte = (ke.getAction() == KeyEvent.ACTION_DOWN) ? 1 : 0;
                     int kcByte = getNormalizedKeyCode(ke.getKeyCode());
-                    if ((isDownByte == 1) != keyStates[kcByte]) {
-                        try {
-                            os.write(isDownByte);
-                            os.write(kcByte);
-                            os.flush();
-                        } catch (IOException e) {
-                            e.printStackTrace();
+                    Log.e("nkc", String.valueOf(kcByte));
+                    if (kcByte != -1) {
+                        if ((isDownByte == 1) != keyStates[kcByte]) {
+                            try {
+                                os.write(isDownByte);
+                                os.write(kcByte);
+                                os.flush();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                            keyStates[kcByte] = isDownByte == 1;
                         }
-                        keyStates[kcByte] = isDownByte == 1;
                     }
                 }
             }
@@ -147,37 +162,18 @@ public class TranscriptorActivity extends AppCompatActivity {
         return (int)(value*100);
     }
     private int getNormalizedKeyCode(int keycode){
-        switch (keycode){
-            case KeyEvent.KEYCODE_BUTTON_A:
-                return 0;
-            case KeyEvent.KEYCODE_BUTTON_B:
-                return 1;
-            case KeyEvent.KEYCODE_BUTTON_X:
-                return 2;
-            case KeyEvent.KEYCODE_BUTTON_Y:
-                return 3;
-            case KeyEvent.KEYCODE_BUTTON_L1:
-                return 4;
-            case KeyEvent.KEYCODE_BUTTON_R1:
-                return 5;
-            case KeyEvent.KEYCODE_BUTTON_START:
-                return 10;
-            case KeyEvent.KEYCODE_BACK:
-            case KeyEvent.KEYCODE_BUTTON_SELECT:
-                return 11;
-            case KeyEvent.KEYCODE_BUTTON_THUMBL:
-                return 12;
-            case KeyEvent.KEYCODE_BUTTON_THUMBR:
-                return 13;
-            /*case KeyEvent.KEYCODE_DPAD_UP:
-                return 6;
-            case KeyEvent.KEYCODE_DPAD_DOWN:
-                return 7;
-            case KeyEvent.KEYCODE_DPAD_LEFT:
-                return 8;
-            case KeyEvent.KEYCODE_DPAD_RIGHT:
-                return 9;*/ //deprecate the d-pad as its implementation is broken in Android and is used for both the joystick and pad
+        for (int i = 0; i < kcal.size(); i++){
+            Log.e("kcal", String.valueOf(kcal.get(i)));
         }
-        return -1;
+        return kcal.indexOf(keycode);
+    }
+    private ControllerPreset createFallbackPreset(){
+        int[] keycodes = new int[]{
+                KeyEvent.KEYCODE_BUTTON_A, KeyEvent.KEYCODE_BUTTON_B, KeyEvent.KEYCODE_BUTTON_X, KeyEvent.KEYCODE_BUTTON_Y,
+                KeyEvent.KEYCODE_BUTTON_R1, KeyEvent.KEYCODE_BUTTON_R2, 0, 0, 0, 0, KeyEvent.KEYCODE_BUTTON_START, KeyEvent.KEYCODE_BACK,
+                KeyEvent.KEYCODE_BUTTON_THUMBL, KeyEvent.KEYCODE_BUTTON_THUMBR};
+        ControllerPreset test = new ControllerPreset(this, "current", keycodes, new int[8], true);
+        Log.e("test2", test.presetName);
+        return test;
     }
 }
